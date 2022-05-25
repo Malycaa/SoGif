@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>POST</title>
+  <!-- <link rel="stylesheet" href="style.css"> -->
+</head>
+<style>
+    nav {
+    display: flex;
+    background-color: rgb(23, 189, 120);
+    justify-content: flex-start;
+    /* padding: 10px; */
+    color: aliceblue;
+    height: 50px;
+    align-items: center;
+    }
+
+    .logo {
+    margin-right: auto;
+    margin: 30px
+    }
+
+    .addArt {
+    margin-right: auto;
+    margin: 40px
+    }
+</style>
+<body>
+    <nav>
+        <div>
+            <button onclick="location.href='/'">logout</button>
+        </div>
+    </nav>
+    <h1>All User</h1>
+    </form>
+
+    <table border="3">
+        <tr>
+        <th>IMAGE</th>
+        <th>TOTAL LIKE</th>
+        <th>CAPTION</th>
+        <th>CREATED DATE</th>
+        <th>ACTION</th>
+
+
+        </tr>
+        <% result.forEach(x => { %>
+        <tr>
+            <td><img src="<%=x.imageURL%>" alt=""></td>
+            <td><%=x.like %></td>
+            <td><%=x.caption%></td>
+            <td><%=changeDate(x.createdAt)%></td>
+            <td>
+                <button onclick="location.href='/admin/alluser/view/like/<%=x.id%>'">LIKE</button>
+            </td>
+        </tr>
+        <% })%>
+    </table>
+</body>
+</html> 
