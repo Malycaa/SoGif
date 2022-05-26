@@ -8,9 +8,10 @@ const { needLogin } = require("../help/help")
 
 
 router.get("/login", userController.login)
-router.post("/login", userController.loginPost)
 
+router.post("/login", userController.loginPost)
 router.use(needLogin)
+
 
 router.get("/post/:id", userController.showPost)
 
