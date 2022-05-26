@@ -26,7 +26,7 @@ module.exports = (sequelize, DataTypes) => {
     }
 
     styleName() {
-      return `___${this.username}___`
+      return `****${this.username}****`
     }
 
 

@@ -32,13 +32,10 @@
 </style>
 
 
-<body class="bg-warning">
-    <nav class="navbar navbar-light bg-transparent">
+<body class="bg-light">
+    <nav class="navbar bg-dark">
         <div class="container-fluid">
-            <a class="navbar-brand">
-                <button onclick="location.href='/'" class="btn btn-dark"><i
-                        class="fa-solid fa-right-from-bracket"></i></button>
-            </a>
+            <a class="navbar-brand fs-5" href="/" style="color: white;">Log Out</a>
         </div>
     </nav>
     <div class="container text-center mt-5">
@@ -80,10 +77,7 @@
                         <%=x.User.role%>
                     </td>
                     <td>
-                        <button class="btn btn-light"
-                            onclick="location.href='/admin/alluser/edit/<%=x.id%>'">Edit</button>
-                        <button class="btn btn-light"
-                            onclick="location.href='/admin/alluser/view/<%=x.UserId%>'">View</button>
+                        <a href="/admin/alluser/view/<%=x.UserId%>" class="text-white">View</a>
                     </td>
                 </tr>
                 <% })%>

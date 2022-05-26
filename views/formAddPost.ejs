@@ -25,30 +25,28 @@
     }
 </style>
 
-<body class="bg-warning">
-    <nav class="navbar navbar-light bg-transparent">
+<body class="bg-light">
+    <nav class="navbar bg-dark">
         <div class="container-fluid">
-            <a class="navbar-brand">
-                <button onclick="location.href='/'" class="btn btn-dark"><i
-                        class="fa-solid fa-right-from-bracket"></i></button>
-            </a>
+            <a class="navbar-brand fs-5" href="/user/post/<%=id%>" style="color: white;">Back</a>
+            <a class="navbar-brand fs-5" href="/" style="color: white;">Log Out</a>
         </div>
     </nav>
     <form action="/user/add/<%=id%>" method="post">
         <div class="container text-center" style="margin-top: 150px;">
             <label> Image </label> <br>
             <input type="text" name="imageURL" value="" placeholder=""><BR></BR>
-            <% if (errors) { %>
-                <%=errors.imageURL %>
-                    <% } %>
-                        <label> caption</label><BR>
-                        <input type="text" name="caption" value="" placeholder=""><BR></BR>
 
-                        <% if (errors) { %>
-                            <%=errors.caption %>
-                                <% } %>
-                                    <br>
-                                    <button type="submit" value="Add" class="btn btn-dark">Add</button>
+            <label> caption</label><BR>
+            <input type="text" name="caption" value="" placeholder=""><BR></BR>
+            <br>
+            <% if (errors) { %>
+                <p style="color: red;">
+                    <%=errors %>
+                </p>
+                <% } %>
+                    <button type="submit" value="Add" class="btn btn-dark">Add</button>
+
         </div>
 
     </form>

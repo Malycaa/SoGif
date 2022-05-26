@@ -18,20 +18,7 @@ class Controller {
     static registerPost(req, res, next) {
         let { username, password, email, role, name, bio, gender, UserId } = req.body
 
-        var transporter = nodemailer.createTransport({
-            service: 'gmail',
-            auth: {
-                user: 'randychan35@gmail.com',
-                pass: 'ehvdovnblfkpenzy'
-            }
-        });
 
-        var mailOptions = {
-            from: 'randychan35@gmail.com',
-            to: email,
-            subject: 'INSTATON Pair Project',
-            text: `HAI ${name}, Terima Kasih telah mendaftar.`
-        };
         // console.log('masukk 11111');
         User.create({ username, password, email, role }, {
             returning: true
@@ -41,24 +28,12 @@ class Controller {
 
                 const id = result.id
                 if (role === "user") {
-                // console.log('masukk 3333');
+                    // console.log('masukk 3333');
 
                     return Profile.create({ name, bio, gender, UserId: id })
                         .then(result => {
                             // console.log('masukk 4444');
-
-                            transporter.sendMail(mailOptions, function (error, info) {
-                                if (error) {
-                                    console.log("erorrr cuk!!");
-                                    console.log(error);
-                                } else {
-                                    console.log("jalan cuk!!");
-
-                                    return res.redirect(`/user/login`)
-                                }
-                            });
-                                    // return res.redirect(`/user/login`)
-
+                            return res.redirect(`/user/login`)
                         })
                         .catch(err => {
                             if (err.name === 'SequelizeValidationError') {
@@ -69,7 +44,7 @@ class Controller {
                             }
                             res.send(err)
                         })
-                } 
+                }
                 if (role === "admin") {
                     return Profile.create({ name, bio, gender, UserId: id })
                         .then(result => {

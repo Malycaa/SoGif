@@ -11,24 +11,19 @@ class adminController {
     }
 
     static loginPost(req, res, next) {
+        // console.log(req.body)
         let { username, password } = req.body
         User.findOne({
             where: { username }
         })
             .then(user => {
-                let id = user.id
-
                 if (user && user.role === "admin") {
                     let truePassword = bycrpt.compareSync(password, user.password)
-                   
                     if (truePassword) {
-                        req.session.user = {
-                            id:id
-                        }
                         return res.redirect(`/admin/alluser`)
                     } else {
                         const error = "Invalid username/password"
-                        return res.redirect(`/user/login?error=${error}`)
+                        return res.redirect(`/admin/login?error=${error}`)
                     }
                 } else {
                     return res.send(`anda bukan admin`)
@@ -133,6 +128,29 @@ class adminController {
             .then(result => {
                 temp = result
                 return Post.increment('like', {
+                    where: {
+                        id: id
+                    }
+                })
+            })
+            .then(result => {
+
+                // console.log(temp)
+                res.redirect(`/admin/alluser/view/${temp.UserId}`)
+            })
+            .catch(err => {
+                console.log(err)
+            })
+    }
+
+    static unlike(req, res, next) {
+        let id = +req.params.postId
+        // console.log(id)
+        let temp
+        Post.findByPk(id)
+            .then(result => {
+                temp = result
+                return Post.increment('unlike', {
                     where: {
                         id: id
                     }
