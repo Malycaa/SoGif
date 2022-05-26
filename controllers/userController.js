@@ -1,4 +1,4 @@
-const { User, Post } = require("../models/index")
+const { User, Post, Profile } = require("../models/index")
 
 const bycrpt = require("bcryptjs")
 
@@ -48,14 +48,24 @@ class userController {
     static showPost(req, res, next) {
         // console.log(req.params)
         let id = +req.params.id
+        let result;
         Post.findAll({
             where: {
                 UserId: id
             }
         })
-            .then(result => {
-                console.log(result)
-                res.render('postUser.ejs', { result, id, changeDate })
+        .then(post=>{
+            result = post
+            return Profile.findOne({
+                where: {
+                    UserId: id
+                }
+            })
+        })//findall usernya gitu ya, nanti passing ke dalam thne dibawah//
+            .then(temp => {
+                console.log(temp)
+                // console.log(result,'========')
+                res.render('postUser.ejs', { temp, result, id, changeDate })
             })
             .catch(err => {
                 res.send(err)
