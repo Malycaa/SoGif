@@ -1,7 +1,7 @@
 {
   "name": "pair-programming",
   "version": "1.0.0",
-  "description": "",
+  "description": "jelek",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -13,7 +13,7 @@
     "bcryptjs": "^2.4.3",
     "dotenv": "^16.0.1",
     "ejs": "^3.1.8",
-    "express": "^4.17.3",
+    "express": "^4.18.1",
     "express-session": "^1.17.3",
     "heroku": "^7.60.2",
     "nodemailer": "^6.7.3",
@@ -22,5 +22,13 @@
   },
   "devDependencies": {
     "sequelize-cli": "^6.4.1"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Malycaa/SoGif.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Malycaa/SoGif/issues"
+  },
+  "homepage": "https://github.com/Malycaa/SoGif#readme"
 }
