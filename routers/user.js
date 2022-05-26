@@ -7,7 +7,9 @@ const userController = require("../controllers/userController")
 
 
 router.get("/login", userController.login)
+
 router.post("/login", userController.loginPost)
+
 
 router.use(function (req, res, next) {
   if (req.session.userid) {
@@ -17,6 +19,7 @@ router.use(function (req, res, next) {
     res.redirect(`/user/login?error=${errors}`)
   }
 })
+
 
 router.get("/post/:id", userController.showPost)
 
