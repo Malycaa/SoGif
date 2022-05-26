@@ -8,6 +8,8 @@ const needLogin = (req, res, next) =>{
     //     id:id
     // }
     console.log(req.session);
+    console.log('aaaa');
+
     if(!req.session.user){
         // let error = ('jgn by pass')
         res.redirect('/user/login')
