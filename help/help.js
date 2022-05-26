@@ -3,11 +3,20 @@ function changeDate(value){
 }
 
 
-// const needLogin = (req, res, next) =>{
-//     if(!req.session.UserId)
-// }
+const needLogin = (req, res, next) =>{
+    // req.session.user = {
+    //     id:id
+    // }
+    console.log(req.session);
+    if(!req.session.user){
+        // let error = ('jgn by pass')
+        res.redirect('/user/login')
+    }else{
+        next()//lanjut
+    }
+}
 
-module.exports = { changeDate }
+module.exports = { changeDate , needLogin}
 
 
 

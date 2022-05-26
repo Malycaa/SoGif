@@ -3,16 +3,9 @@
 const express = require("express")
 const router = express.Router()
 const userController = require("../controllers/userController")
-const session = require('express-session')
+const { needLogin } = require("../help/help")
 
 
-const needLogin = function (req, res, next) {
-    if(!req.session.id){
-        res.redirect('/')
-    } else {
-        next()
-    }
-}
 
 router.get("/login", userController.login)
 router.post("/login", userController.loginPost)

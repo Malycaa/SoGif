@@ -11,7 +11,7 @@ class userController {
         res.render("loginUser.ejs")
     }
 
-    static loginPost(req, res) {
+    static loginPost(req, res, next) {
         let { username, password } = req.body
 
         User.findOne({
@@ -21,11 +21,16 @@ class userController {
                 let id = user.id
                 if (user && user.role === "user") {
                     let truePassword = bycrpt.compareSync(password, user.password)
-
                     if (truePassword) {
-                        // req.session.id = id
-                        console.log(req.session)
+                        // console.log(id)
+                        req.session.user = {
+                            id:id
+                        }
+                        // console.log(req.session)
+                        // localStorage.setItem('id', id)
+                        
                         return res.redirect(`/user/post/${id}`)
+                        // return res.redirect(`/user/post/${id}?id=`)
                     } else {
                         const error = "Invalid username/password"
                         return res.redirect(`/user/login?error=${error}`)
@@ -40,7 +45,7 @@ class userController {
             })
     }
 
-    static showPost(req, res) {
+    static showPost(req, res, next) {
         // console.log(req.params)
         let id = +req.params.id
         Post.findAll({
@@ -57,7 +62,7 @@ class userController {
             })
     }
 
-    static like(req, res) {
+    static like(req, res, next) {
         let id = +req.params.idPost
         // console.log(id)
         let temp
@@ -79,7 +84,7 @@ class userController {
             })
     }
 
-    static delete(req, res) {
+    static delete(req, res, next) {
         let id = +req.params.idPost
         let temp
         Post.findByPk(id)
@@ -100,7 +105,7 @@ class userController {
             })
     }
 
-    static addPost(req, res) {
+    static addPost(req, res, next) {
         let id = req.params.userId
         let errors = {}
         res.render('formAddPost.ejs', { id, errors })

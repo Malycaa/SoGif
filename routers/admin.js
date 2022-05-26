@@ -3,14 +3,15 @@
 const express = require("express")
 const router = express.Router()
 const adminController = require("../controllers/adminController")
+const { needLogin } = require("../help/help")
 
-const needLogin = function (req, res, next) {
-    console.log('Time:' , Date.now())
-    next()
-}
 
-router.get("/login", needLogin, adminController.login)
-router.post("/login", needLogin, adminController.loginPost)
+
+router.get("/login", adminController.login)
+router.post("/login", adminController.loginPost)
+
+router.use(needLogin)
+
 
 router.get("/alluser", adminController.alluser)
 

@@ -10,7 +10,7 @@ class adminController {
         res.render("loginAdmin.ejs")
     }
 
-    static loginPost(req, res) {
+    static loginPost(req, res, next) {
         let { username, password } = req.body
         User.findOne({
             where: { username }
@@ -36,7 +36,7 @@ class adminController {
             })
     }
 
-    static alluser(req, res) {
+    static alluser(req, res, next) {
         let name = req.query.name
         // console.log(name)
         Profile.findAll({
@@ -56,7 +56,7 @@ class adminController {
 
     }
 
-    static editProfile(req, res) {
+    static editProfile(req, res, next) {
         let id = +req.params.profileId
 
         Profile.findByPk(id, {
@@ -73,7 +73,7 @@ class adminController {
 
     }
 
-    static editProfilePost(req, res) {
+    static editProfilePost(req, res, next) {
         let { name, gender, username, email, UserId } = req.body
         let data1 = { name, gender }
         let data2 = { username, email }
@@ -101,7 +101,7 @@ class adminController {
 
     }
 
-    static view(req, res) {
+    static view(req, res, next) {
         let id = +req.params.UserId
         // console.log(id)
         Post.findAll({
@@ -114,7 +114,7 @@ class adminController {
             })
     }
 
-    static like(req, res) {
+    static like(req, res, next) {
         let id = +req.params.postId
         // console.log(id)
         let temp
