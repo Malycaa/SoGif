@@ -4,6 +4,8 @@ const bycrpt = require("bcryptjs")
 
 const { changeDate } = require("../help/help")
 
+const nodemailer = require('nodemailer');
+
 
 
 class userController {
@@ -23,12 +25,10 @@ class userController {
                     let truePassword = bycrpt.compareSync(password, user.password)
                     if (truePassword) {
                         // console.log(id)
-                        req.session.user = {
-                            id:id
-                        }
+                        req.session.userid = user.id
                         // console.log(req.session)
                         // localStorage.setItem('id', id)
-                        
+
                         return res.redirect(`/user/post/${id}`)
                         // return res.redirect(`/user/post/${id}?id=`)
                     } else {
@@ -54,14 +54,14 @@ class userController {
                 UserId: id
             }
         })
-        .then(post=>{
-            result = post
-            return Profile.findOne({
-                where: {
-                    UserId: id
-                }
-            })
-        })//findall usernya gitu ya, nanti passing ke dalam thne dibawah//
+            .then(post => {
+                result = post
+                return Profile.findOne({
+                    where: {
+                        UserId: id
+                    }
+                })
+            })//findall usernya gitu ya, nanti passing ke dalam thne dibawah//
             .then(temp => {
                 console.log(temp)
                 // console.log(result,'========')
@@ -74,10 +74,18 @@ class userController {
 
     static like(req, res, next) {
         let id = +req.params.idPost
+        let email
+
+
+
         // console.log(id)
         let temp
-        Post.findByPk(id)
+        Post.findByPk(id, {
+            include: User
+        })
             .then(result => {
+                // res.send(result)
+                email = result.User.email
                 temp = result
                 // console.log(result)
                 return Post.increment('like', {
@@ -87,7 +95,83 @@ class userController {
                 })
             })
             .then(result => {
-                res.redirect(`/user/post/${temp.UserId}`)
+
+                let transporter = nodemailer.createTransport({
+                    service: 'gmail',
+                    auth: {
+                        user: 'randychan35@gmail.com',
+                        pass: 'ehvdovnblfkpenzy'
+                    }
+                });
+
+                let mailOptions = {
+                    from: 'randychan35@gmail.com',
+                    to: email,
+                    subject: 'SoGif!',
+                    text: `ada yang melike post mu!`
+                };
+
+                transporter.sendMail(mailOptions, function (error, info) {
+                    if (error) {
+                        console.log("erorrr cuk!!");
+                        console.log(error);
+                    } else {
+                        console.log("jalan cuk!!");
+                        res.redirect(`/user/post/${temp.UserId}`)
+
+                    }
+                });
+            })
+            .catch(err => {
+                console.log(err)
+            })
+    }
+
+    static unlike(req, res, next) {
+        let id = +req.params.idPost
+        let email
+        // console.log(id)
+        let temp
+        Post.findByPk(id, {
+            include: User
+        })
+            .then(result => {
+                email = result.User.email
+                temp = result
+                // console.log(result)
+                return Post.increment('unlike', {
+                    where: {
+                        id: id
+                    }
+                })
+            })
+            .then(result => {
+
+                let transporter = nodemailer.createTransport({
+                    service: 'gmail',
+                    auth: {
+                        user: 'randychan35@gmail.com',
+                        pass: 'ehvdovnblfkpenzy'
+                    }
+                });
+
+                let mailOptions = {
+                    from: 'randychan35@gmail.com',
+                    to: email,
+                    subject: 'SoGif!',
+                    text: `ada yang unlike post mu!`
+                };
+
+                transporter.sendMail(mailOptions, function (error, info) {
+                    if (error) {
+                        console.log("erorrr cuk!!");
+                        console.log(error);
+                    } else {
+                        console.log("jalan cuk!!");
+                        res.redirect(`/user/post/${temp.UserId}`)
+
+                    }
+                });
             })
             .catch(err => {
                 console.log(err)
@@ -117,31 +201,35 @@ class userController {
 
     static addPost(req, res, next) {
         let id = req.params.userId
-        let errors = {}
+        const { errors } = req.query
         res.render('formAddPost.ejs', { id, errors })
     }
 
     static postAddPost(req, res) {
-        let UserId = +req.params.userId
+        let UserId = req.params.userId
         let { imageURL, caption } = req.body
         let like = 0
-        let id = {}
+        let unlike = 0
 
-        Post.create({ imageURL, like, UserId, caption })
+        Post.create({ imageURL, like, unlike, UserId, caption })
             .then(result => {
                 res.redirect(`/user/post/${UserId}`)
             })
             .catch(err => {
-                const errors = {}
-
-                err.errors.forEach(x => {
-                    if (errors[x.path]) {
-                        errors[x.path].push(x.message)
-                    } else {
-                        errors[x.path] = x.message
-                    }
+                const errors = err.errors.map(el => {
+                    return el.message
                 })
-                res.render('formAddPost.ejs', { errors, id })
+                res.redirect(`${UserId}?errors=${errors}`)
+                // res.send(err)
+                // const errors = {}
+                // err.errors.forEach(x => {
+                //     if (errors[x.path]) {
+                //         errors[x.path] = (x.message)
+                //     } else {
+                //         errors[x.path] = x.message
+                //     }
+                // })
+                // res.render('formAddPost.ejs', { errors })
 
             })
 

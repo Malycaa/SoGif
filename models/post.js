@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      Post.belongsTo(models.User,{
+      Post.belongsTo(models.User, {
         foreignKey: "UserId"
       })
     }
@@ -20,18 +20,29 @@ module.exports = (sequelize, DataTypes) => {
   Post.init({
     imageURL: {
       type: DataTypes.STRING,
+      allowNull: false,
       validate: {
-        notEmpty : {
-          msg: `Image URL is required`
+        notEmpty: { msg: `URL is required` },
+        isUrl: { msg: 'urlGIF must be url' },
+        isGif(value) {
+          let formatFile = value.slice(value.length - 4)
+          if (formatFile !== '.gif') {
+            throw new Error('url must be GIF format')
+          }
         }
       }
     },
+
     like: DataTypes.INTEGER,
+
+    unlike: DataTypes.INTEGER,
+
     UserId: DataTypes.STRING,
-    caption:{
+
+    caption: {
       type: DataTypes.STRING,
       validate: {
-        notEmpty : {
+        notEmpty: {
           msg: `Caption is required`
         }
       }

@@ -36,45 +36,53 @@
     }
 </style>
 
-<body class="bg-warning">
-    <nav class="navbar navbar-light bg-transparent">
+<body class="bg-light">
+
+    <nav class="navbar bg-dark">
         <div class="container-fluid">
-            <a class="navbar-brand">
-                <button onclick="location.href='/'" class="btn btn-dark"><i
-                        class="fa-solid fa-right-from-bracket"></i></button>
+            <a class="navbar-brand text-white fs-5">
+                <%= temp.name %><br>
+                    <%= temp.bio %>
             </a>
+            <a class="navbar-brand fs-5" href="/" style="color: white;">Log Out</a>
         </div>
     </nav>
-    <div class="container text-center mt-1">
+
+    <div class="text-center">
         <h1>Post User</h1>
-        <h1><%= temp.name %> </h1>
-        <h1><%= temp.bio %> </h1>
 
         <button class="btn btn-dark" onclick="location.href='/user/add/<%=id%>'">add Post</button><br><br>
         <% if(result.length) { %>
-
-            <% result.forEach(x=> { %>
-                <div class="card" style="width: 18rem;background-color: black;">
-                    <img src="<%=x.imageURL%>" class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <p class="card-text">
-                            <%=x.caption%>
-                        </p>
-                        <p class="card-text">
-                            <%=x.like %>
-                        </p>
-                        <p class="card-text">
-                            <%=changeDate(x.createdAt)%>
-                        </p>
-                        <button onclick="location.href='/user/like/<%=x.id%>'" class="btn btn-light ">LIKE</button>
-                        <button onclick="location.href='/user/delete/<%=x.id%>'" class="btn btn-light ">Delete</button>
+            <div class="row">
+                <% result.forEach(x=> { %>
+                    <div class="col-md-3" style="margin: 10px 0px;">
+                        <div class="card" style="width: 18rem;background-color: black;">
+                            <img src="<%=x.imageURL%>" class="card-img-top" alt="...">
+                            <div class="card-body">
+                                <p class="card-text">
+                                    <%=x.caption%>
+                                </p>
+                                <p class="card-text">
+                                    <%=x.like %>
+                                        <button onclick="location.href='/user/like/<%=x.id%>'"
+                                            class="btn btn-light ">LIKE</button>
+                                        <%=x.unlike %>
+                                            <button onclick="location.href='/user/unlike/<%=x.id%>'"
+                                                class="btn btn-light ">UNLIKE</button>
+                                </p>
+                                <p class="card-text">
+                                    <%=changeDate(x.createdAt)%>
+                                </p>
+                                <button onclick="location.href='/user/delete/<%=x.id%>'"
+                                    class="btn btn-light ">Delete</button>
+                            </div>
+                        </div>
                     </div>
-                </div>
-
-                <% })%>
-                    <% } else { %>
-                        <h2>You dont have any post yet</h2>
-                        <% } %>
+                    <% })%>
+                        <% } else { %>
+                            <h2>You dont have any post yet</h2>
+                            <% } %>
+            </div>
     </div>
 </body>
 
