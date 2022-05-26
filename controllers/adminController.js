@@ -16,10 +16,15 @@ class adminController {
             where: { username }
         })
             .then(user => {
+                let id = user.id
+
                 if (user && user.role === "admin") {
                     let truePassword = bycrpt.compareSync(password, user.password)
                    
                     if (truePassword) {
+                        req.session.user = {
+                            id:id
+                        }
                         return res.redirect(`/admin/alluser`)
                     } else {
                         const error = "Invalid username/password"
@@ -39,6 +44,7 @@ class adminController {
     static alluser(req, res, next) {
         let name = req.query.name
         // console.log(name)
+
         Profile.findAll({
             where: {
                 name: Profile.search(name)
@@ -48,7 +54,7 @@ class adminController {
             .then(result => {
                 // res.send(result)
                 // console.log(result)
-                res.render('alluser.ejs', { result, changeDate })
+                res.render('alluser.ejs', { result ,changeDate })
             })
             .catch(err => {
                 console.log(err)
@@ -109,9 +115,14 @@ class adminController {
                 UserId: id
             }
         })
-            .then(result => {
-                res.render('postAdmin.ejs', { result, changeDate })
-            })
+       
+        .then(result => {
+            res.render('postAdmin.ejs', { result,  changeDate })
+        })
+        .catch(err=>{
+            res.send(err)
+
+        })
     }
 
     static like(req, res, next) {

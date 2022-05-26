@@ -7,8 +7,8 @@ const needLogin = (req, res, next) =>{
     // req.session.user = {
     //     id:id
     // }
-    console.log(req.session);
-    console.log('aaaa');
+    // console.log(req.session);
+    // console.log('aaaa');
 
     if(!req.session.user){
         // let error = ('jgn by pass')
