@@ -6,7 +6,9 @@ if (process.env.NODE_ENV !== "production") {
 const express = require("express")
 const app = express()
 const session = require('express-session')
+
 const port = process.env.PORT||3000
+
 const router = require("./routers/index.js")
 
 app.set('view engine', 'ejs')
